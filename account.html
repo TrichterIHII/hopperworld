@@ -103,22 +103,27 @@
     <hr>
 
     <script type="module">
-      // Firebase konfigurieren
-      import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js';
-      import { getAuth, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js';
-      
-      const firebaseConfig = {
-        // HIER MUSST DU DEINE ECHTE FIREBASE-KONFIGURATION EINFÜGEN
-        apiKey: "your-actual-api-key",
-        authDomain: "your-project.firebaseapp.com",
-        projectId: "hopperworld98",//id
-        storageBucket: "your-project.appspot.com",
-        messagingSenderId: "123456789",
-        appId: "your-app-id"
-      };
-      
-      const app = initializeApp(firebaseConfig);
-      const auth = getAuth(app);
+      // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyA2eSnYo5VbwU6lveN8MAOMOmLoOzfGO5o",
+    authDomain: "hopperworld98.firebaseapp.com",
+    projectId: "hopperworld98",
+    storageBucket: "hopperworld98.firebasestorage.app",
+    messagingSenderId: "741082645278",
+    appId: "1:741082645278:web:f47b917a21e9ceeb557f0f",
+    measurementId: "G-34P4CRSXVP"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
       
       // HTML-Elemente abrufen
       const nameInput = document.getElementById('name');
