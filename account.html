@@ -55,8 +55,20 @@
     <p>Noch kein Account? <a href="signin.html">Einloggen</a>!</p>
     <hr>
     <script>
-      getAccountData() {}
-      checkPass(name, pwd) {
+      let names = {};
+      let name = getElementByID(name);
+      let pwd = getElementByID(pwd);
+      getAccountData() {
+        let correct_name;
+        let correct_pwd;
+        let i = 0;
+        
+        while (names.hasNext) {
+          names[i] = "";//firebase name
+          i++;
+        }
+      }
+      checkPass() {
         if (name == correct_name && pwd == correct_pwd) {
           
         }
