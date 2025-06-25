@@ -54,25 +54,159 @@
     </div>
     <p>Noch kein Account? <a href="signin.html">Einloggen</a>!</p>
     <hr>
-    <script>
-      let names = {};
-      let name = getElementByID(name);
-      let pwd = getElementByID(pwd);
-      getAccountData() {
-        let correct_name;
-        let correct_pwd;
-        let i = 0;
+    <script type="module">
+        // Firebase konfigurieren
+import { initializeApp } from 'firebase/app';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
+
+const firebaseConfig = {
+  // Deine Firebase-Konfiguration hier
+  apiKey: "your-api-key",
+  authDomain: "your-project.firebaseapp.com",
+  projectId: "your-project-id",
+  // ...
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// HTML-Elemente abrufen
+const nameInput = document.getElementById('name');
+const pwdInput = document.getElementById('pwd');
+const loginButton = document.getElementById('loginButton');
+
+// Option 1: Firebase Authentication verwenden (empfohlen)
+async function loginWithFirebaseAuth() {
+  const email = nameInput.value;
+  const password = pwdInput.value;
+  
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+    console.log('Login erfolgreich:', user);
+    // Weiterleitung oder UI-Update
+    window.location.href = '/dashboard.html';
+  } catch (error) {
+    console.error('Login fehlgeschlagen:', error.message);
+    alert('Ungültige Anmeldedaten');
+  }
+}
+
+// Option 2: Benutzerdaten aus Firestore abrufen und vergleichen
+async function loginWithFirestore() {
+  const username = nameInput.value;
+  const password = pwdInput.value;
+  
+  try {
+    // Benutzerdokument aus Firestore abrufen
+    const userDoc = await getDoc(doc(db, 'users', username));
+    
+    if (userDoc.exists()) {
+      const userData = userDoc.data();
+      
+      // Passwort vergleichen (in der Praxis solltest du gehashte Passwörter verwenden)
+      if (userData.password === password) {
+        console.log('Login erfolgreich');
+        // Erfolgreiches Login
+        localStorage.setItem('currentUser', username);
+        window.location.href = '/dashboard.html';
+      } else {
+        alert('Falsches Passwort');
+      }
+    } else {
+      alert('Benutzer nicht gefunden');
+    }
+  } catch (error) {
+    console.error('Fehler beim Login:', error);
+    alert('Login-Fehler');
+  }
+}
+
+// Option 3: Alle Benutzer laden und vergleichen (nicht empfohlen für große Datenmengen)
+async function getAllUsersAndCheck() {
+  const username = nameInput.value;
+  const password = pwdInput.value;
+  
+  try {
+    const usersCollection = collection(db, 'users');
+    const usersSnapshot = await getDocs(usersCollection);
+    
+    let userFound = false;
+    
+    usersSnapshot.forEach((doc) => {
+      const userData = doc.data();
+      if (userData.username === username && userData.password === password) {
+        userFound = true;
+        console.log('Login erfolgreich');
+        localStorage.setItem('currentUser', username);
+        window.location.href = '/dashboard.html';
+      }
+    });
+    
+    if (!userFound) {
+      alert('Ungültige Anmeldedaten');
+    }
+  } catch (error) {
+    console.error('Fehler beim Laden der Benutzerdaten:', error);
+  }
+}
+
+// Event Listener hinzufügen
+loginButton.addEventListener('click', loginWithFirebaseAuth);
+
+// Formular-Validierung
+function validateInput() {
+  const name = nameInput.value.trim();
+  const pwd = pwdInput.value.trim();
+  
+  if (name === '' || pwd === '') {
+    alert('Bitte alle Felder ausfüllen');
+    return false;
+  }
+  
+  return true;
+}
+
+// Erweiterte Version mit Formular-Handling
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  if (validateInput()) {
+    await loginWithFirebaseAuth();
+  }
+});
+// Hier würde dein Firebase-JavaScript-Code stehen
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js';
+import { getAuth, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js';
         
-        while (names.hasNext) {
-          names[i] = "";//firebase name
-          i++;
-        }
-      }
-      checkPass() {
-        if (name == correct_name && pwd == correct_pwd) {
-          
-        }
-      }
+// Firebase konfigurieren
+const firebaseConfig = {
+   // Deine Firebase-Konfiguration
+};
+        
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+        
+// Login-Funktion
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+            
+const email = document.getElementById('name').value;
+const password = document.getElementById('pwd').value;
+const errorDiv = document.getElementById('error');
+            
+try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    console.log('Login erfolgreich:', userCredential.user);
+    // Weiterleitung nach erfolgreichem Login
+        window.location.href = '/dashboard.html';
+    } catch (error) {
+        errorDiv.style.display = 'block';
+        errorDiv.textContent = 'Login fehlgeschlagen: ' + error.message;
+    }
+});
     </script>
   </body>
 </html>
