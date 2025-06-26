@@ -4,6 +4,9 @@ body {
   background-color: #000;
   color: #fff;
 }
+a {
+  color: #fee;
+}
 nav {
   background-color: #400;
 }
