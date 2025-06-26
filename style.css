@@ -19,8 +19,10 @@ color_fee {
 .container {
   background-color: #333;
   padding: 10px;
+  border: 2px solid #fdd;
 }
 .update_container {
   background-color: #555;
   padding: 10px;
+  border: 2px solid #fdd;
 }
