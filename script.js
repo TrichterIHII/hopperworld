@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
 function goTo(place) {
   if (place === "galarie") {
-    
+    document.getElementById();
   }
   if (place === "updates") {
     
