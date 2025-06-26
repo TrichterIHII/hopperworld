@@ -16,11 +16,11 @@ nav a:hover {
 color_fee {
   color: #fee;
 }
-container {
+.container {
   background-color: #333;
   padding: 10px;
 }
-update_container {
+.update_container {
   background-color: #555;
   padding: 10px;
 }
