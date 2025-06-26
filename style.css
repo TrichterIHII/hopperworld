@@ -20,6 +20,7 @@ div.container {
   background-color: #333;
   padding: 10px;
   border: 2px solid #fdd;
+  border-radius: 35px;
 }
 div.update_container {
   background-color: #555;
