@@ -9,6 +9,7 @@ a {
 }
 nav {
   background-color: #400;
+  padding: 10px;
 }
 nav a {
   color: #000;
