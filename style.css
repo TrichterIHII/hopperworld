@@ -2,6 +2,7 @@ body {
   margin: 0;
   padding: 0;
   background-color: #000;
+  color: #fff;
 }
 nav {
   background-color: #400;
@@ -11,4 +12,7 @@ nav a {
 }
 nav a:hover {
   color: #100;
+}
+color_fee {
+  color: #fee;
 }
