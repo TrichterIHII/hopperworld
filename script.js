@@ -8,9 +8,9 @@ document.addEventListener("DOMContentLoaded", function(){
 
 function goTo(place) {
   if (place === "galarie") {
-    document.getElementById();
+    document.getElementById("container_galarie").scrollIntoView({ behavior: "smooth" });
   }
   if (place === "updates") {
-    
+    document.getElementById("container_updates").scrollIntoView({ behavior: "smooth" });
   }
 }
