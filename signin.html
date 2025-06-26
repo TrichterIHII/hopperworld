@@ -1,10 +1,335 @@
 <!DOCTYPE html>
-<html lenght= "de">
+<html lang="de">
   <head>
-    <meta charset="UFT-8">
-    <style></style>
+    <meta charset="UTF-8">
+    <title>Registrierung</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #000;
+        color: #fee;
+        font-family: Arial, sans-serif;
+      }
+      .st_white {
+        color: #fff;
+      }
+      nav {
+        background-color: #400;
+        padding: 10px;
+      }
+      nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      nav li {
+        display: inline;
+      }
+      nav li a {
+        color: #fee;
+        margin-right: 15px;
+        text-decoration: none;
+      }
+      nav li a:hover {
+        color: #fdd;
+      }
+      .register-container {
+        max-width: 400px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #111;
+        border-radius: 8px;
+        border: 1px solid #333;
+      }
+      .input-group {
+        margin-bottom: 15px;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+        color: #fee;
+      }
+      input {
+        background-color: #333;
+        color: #fee;
+        border: 1px solid #555;
+        padding: 12px;
+        width: 100%;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+      input:hover {
+        background-color: #522;
+      }
+      input:focus {
+        outline: none;
+        border-color: #fcc;
+        background-color: #444;
+      }
+      button {
+        background-color: #600;
+        color: #fee;
+        border: none;
+        padding: 12px 20px;
+        cursor: pointer;
+        border-radius: 4px;
+        font-size: 16px;
+        width: 100%;
+        margin-top: 10px;
+      }
+      button:hover {
+        background-color: #800;
+      }
+      button:disabled {
+        background-color: #333;
+        cursor: not-allowed;
+      }
+      a {
+        color: #fcc;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      .message {
+        margin-top: 15px;
+        padding: 10px;
+        border-radius: 4px;
+        display: none;
+      }
+      .error {
+        background-color: #400;
+        color: #f88;
+        border: 1px solid #600;
+      }
+      .success {
+        background-color: #040;
+        color: #8f8;
+        border: 1px solid #060;
+      }
+      .password-requirements {
+        font-size: 12px;
+        color: #aaa;
+        margin-top: 5px;
+      }
+      .requirement {
+        margin: 2px 0;
+      }
+      .requirement.valid {
+        color: #8f8;
+      }
+      .requirement.invalid {
+        color: #f88;
+      }
+    </style>
   </head>
   <body>
+    <nav>
+      <ul>
+        <li><a href="index.html">Startseite</a></li>
+        <li><a href="account.html">Anmelden</a></li>
+      </ul>
+    </nav>
     
+    <div class="register-container">
+      <h1 class="st_white">Registrierung</h1>
+      
+      <form id="registerForm">
+        <div class="input-group">
+          <label for="email">E-Mail-Adresse:</label>
+          <input type="email" id="email" placeholder="deine@email.de" required>
+        </div>
+        
+        <div class="input-group">
+          <label for="username">Benutzername (optional):</label>
+          <input type="text" id="username" placeholder="Benutzername">
+        </div>
+        
+        <div class="input-group">
+          <label for="password">Passwort:</label>
+          <input type="password" id="password" placeholder="Passwort" required>
+          <div class="password-requirements">
+            <div class="requirement" id="req-length">• Mindestens 6 Zeichen</div>
+            <div class="requirement" id="req-letter">• Mindestens ein Buchstabe</div>
+            <div class="requirement" id="req-number">• Mindestens eine Zahl</div>
+          </div>
+        </div>
+        
+        <div class="input-group">
+          <label for="confirmPassword">Passwort bestätigen:</label>
+          <input type="password" id="confirmPassword" placeholder="Passwort wiederholen" required>
+        </div>
+        
+        <button type="submit" id="registerBtn">Registrieren</button>
+      </form>
+      
+      <div id="message" class="message"></div>
+      
+      <p>Bereits ein Account? <a href="account.html">Hier anmelden</a>!</p>
+    </div>
+
+    <script type="module">
+      // Firebase konfigurieren
+      import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js';
+      import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js';
+      import { getFirestore, doc, setDoc } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js';
+      
+      const firebaseConfig = {
+        // HIER DEINE FIREBASE-KONFIGURATION EINFÜGEN
+        apiKey: "your-actual-api-key",
+        authDomain: "your-project.firebaseapp.com",
+        projectId: "your-project-id",
+        storageBucket: "your-project.appspot.com",
+        messagingSenderId: "123456789",
+        appId: "your-app-id"
+      };
+      
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const db = getFirestore(app);
+      
+      // HTML-Elemente
+      const emailInput = document.getElementById('email');
+      const usernameInput = document.getElementById('username');
+      const passwordInput = document.getElementById('password');
+      const confirmPasswordInput = document.getElementById('confirmPassword');
+      const registerBtn = document.getElementById('registerBtn');
+      const messageDiv = document.getElementById('message');
+      
+      // Passwort-Validierung in Echtzeit
+      passwordInput.addEventListener('input', validatePassword);
+      confirmPasswordInput.addEventListener('input', checkPasswordMatch);
+      
+      function validatePassword() {
+        const password = passwordInput.value;
+        const requirements = {
+          length: password.length >= 6,
+          letter: /[a-zA-Z]/.test(password),
+          number: /\d/.test(password)
+        };
+        
+        // Anforderungen visuell aktualisieren
+        document.getElementById('req-length').className = 
+          'requirement ' + (requirements.length ? 'valid' : 'invalid');
+        document.getElementById('req-letter').className = 
+          'requirement ' + (requirements.letter ? 'valid' : 'invalid');
+        document.getElementById('req-number').className = 
+          'requirement ' + (requirements.number ? 'valid' : 'invalid');
+        
+        return requirements.length && requirements.letter && requirements.number;
+      }
+      
+      function checkPasswordMatch() {
+        const password = passwordInput.value;
+        const confirmPassword = confirmPasswordInput.value;
+        
+        if (confirmPassword && password !== confirmPassword) {
+          confirmPasswordInput.style.borderColor = '#f88';
+          return false;
+        } else {
+          confirmPasswordInput.style.borderColor = '#555';
+          return true;
+        }
+      }
+      
+      function showMessage(text, type) {
+        messageDiv.textContent = text;
+        messageDiv.className = 'message ' + type;
+        messageDiv.style.display = 'block';
+      }
+      
+      function hideMessage() {
+        messageDiv.style.display = 'none';
+      }
+      
+      // Registrierungs-Funktion
+      async function registerUser(email, password, username) {
+        try {
+          registerBtn.disabled = true;
+          registerBtn.textContent = 'Registriere...';
+          
+          // Benutzer in Firebase Authentication erstellen
+          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+          const user = userCredential.user;
+          
+          // Displayname setzen falls Benutzername angegeben
+          if (username) {
+            await updateProfile(user, {
+              displayName: username
+            });
+          }
+          
+          // Zusätzliche Benutzerdaten in Firestore speichern
+          await setDoc(doc(db, 'users', user.uid), {
+            email: email,
+            username: username || '',
+            createdAt: new Date().toISOString(),
+            lastLogin: new Date().toISOString()
+          });
+          
+          showMessage('Registrierung erfolgreich! Du wirst weitergeleitet...', 'success');
+          
+          // Weiterleitung nach erfolgreicher Registrierung
+          setTimeout(() => {
+            window.location.href = 'dashboard.html';
+          }, 2000);
+          
+        } catch (error) {
+          console.error('Registrierung fehlgeschlagen:', error);
+          
+          // Benutzerfreundliche Fehlermeldungen
+          switch (error.code) {
+            case 'auth/email-already-in-use':
+              showMessage('Diese E-Mail-Adresse wird bereits verwendet', 'error');
+              break;
+            case 'auth/invalid-email':
+              showMessage('Ungültige E-Mail-Adresse', 'error');
+              break;
+            case 'auth/weak-password':
+              showMessage('Das Passwort ist zu schwach', 'error');
+              break;
+            case 'auth/network-request-failed':
+              showMessage('Netzwerkfehler. Bitte versuche es erneut.', 'error');
+              break;
+            default:
+              showMessage('Registrierung fehlgeschlagen: ' + error.message, 'error');
+          }
+          
+          registerBtn.disabled = false;
+          registerBtn.textContent = 'Registrieren';
+        }
+      }
+      
+      // Formular-Event-Listener
+      document.getElementById('registerForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        hideMessage();
+        
+        const email = emailInput.value.trim();
+        const username = usernameInput.value.trim();
+        const password = passwordInput.value;
+        const confirmPassword = confirmPasswordInput.value;
+        
+        // Eingabe-Validierung
+        if (!email || !password || !confirmPassword) {
+          showMessage('Bitte alle Pflichtfelder ausfüllen', 'error');
+          return;
+        }
+        
+        if (!validatePassword()) {
+          showMessage('Das Passwort erfüllt nicht alle Anforderungen', 'error');
+          return;
+        }
+        
+        if (!checkPasswordMatch()) {
+          showMessage('Die Passwörter stimmen nicht überein', 'error');
+          return;
+        }
+        
+        // Registrierung durchführen
+        await registerUser(email, password, username);
+      });
+    </script>
   </body>
 </html>
