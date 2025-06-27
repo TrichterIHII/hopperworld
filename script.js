@@ -42,12 +42,12 @@ document.addEventListener("DOMContentLoaded", function(){
           '1.0.0': {
             title: 'Version 1.0.0 Changelog',
             content: `
-              <h4>🎉 Erstes Release</h4>
+              <h4>Erstes Release!</h4>
               <ul>
-                <li>Grundlegende Website erstellt</li>
-                <li>Galerie-Bereich hinzugefügt</li>
-                <li>Update-System implementiert</li>
-                <li>Basis-Navigation erstellt</li>
+                <li>2D Tyle-Map</li>
+                <li>Mobs mit verschiedenen Fähigkeiten</li>
+                <li>Grundlegende Features (Lebensleiste, Kampfsysthem, ect. )</li>
+                <li>Standart Texturen</li>
               </ul>
             `
           }
