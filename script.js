@@ -25,17 +25,9 @@ document.addEventListener("DOMContentLoaded", function(){
           '1.0.1': {
             title: 'Version 1.0.1 Changelog',
             content: `
-              <h4>🚀 Neue Features</h4>
+              <h4>Neue Features: </h4>
               <ul>
-                <li>Verbesserte Galerie-Ansicht</li>
-                <li>Popup-System hinzugefügt</li>
-                <li>Responsive Design verbessert</li>
-              </ul>
-              <h4>🐛 Fehlerbehebungen</h4>
-              <ul>
-                <li>UTF-8 Problem behoben</li>
-                <li>Navigation korrigiert</li>
-                <li>Popup-Funktionalität implementiert</li>
+                <li></li>
               </ul>
             `
           },
