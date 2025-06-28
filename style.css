@@ -5,25 +5,26 @@ body {
   color: #fff;
   font-family: Arial, sans-serif;
 }
-a {
-  color: #fee;
-}
 nav {
-  background-color: #400;
-  padding: 10px;
-}
-nav a {
-  color: #000;
-  text-decoration: none;
-}
-nav li a {
-  color: #fee !important;
+        background-color: #400;
+        padding: 10px;
+      }
+      nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      nav li {
+        display: inline;
+      }
+      nav li a {
+        color: #fee;
         margin-right: 15px;
         text-decoration: none;
-}
-nav a:hover {
-  color: #100;
-}
+      }
+      nav li a:hover {
+        color: #fdd;
+      }
 color_fee {
   color: #fee;
 }
