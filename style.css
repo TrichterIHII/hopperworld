@@ -25,8 +25,11 @@ nav li a {
 nav li a:hover {
   color: #fdd;
 }
-color_fee {
+a {
   color: #fee;
+}
+color_fee {
+  color: #fee !important;
 }
 div.container {
   background-color: #333;
