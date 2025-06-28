@@ -6,25 +6,25 @@ body {
   font-family: Arial, sans-serif;
 }
 nav {
-        background-color: #400;
-        padding: 10px;
-      }
-      nav ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-      }
-      nav li {
-        display: inline;
-      }
-      nav li a {
-        color: #fee;
-        margin-right: 15px;
-        text-decoration: none;
-      }
-      nav li a:hover {
-        color: #fdd;
-      }
+  background-color: #400;
+  padding: 10px;
+}
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+nav li {
+  display: inline;
+}
+nav li a {
+  color: #fee;
+  margin-right: 15px;
+  text-decoration: none;
+}
+nav li a:hover {
+  color: #fdd;
+}
 color_fee {
   color: #fee;
 }
