@@ -13,6 +13,7 @@ nav {
 }
 nav a {
   color: #000;
+  text-decoration: none;
 }
 nav li a {
   color: #fee !important;
